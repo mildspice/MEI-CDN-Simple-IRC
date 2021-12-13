@@ -1,7 +1,7 @@
 # MEI | CDN 2021-2022 | GLOBAL MODULE MANAGEMENT NOT WORKING CORRECTLY
 Simple IRC - Using Java RMI
 
-<h2>Project Modules | Clean and Install maven dependencies</h2>
+<!-- <h2>Project Modules | Clean and Install maven dependencies</h2>
 
 - Clone the project and open a terminal inside the project's directory (where the project modules Client, Server and RMIInterfaces are located)
 
@@ -52,4 +52,4 @@ Simple IRC - Using Java RMI
 
 - Run the following commands to run the application:
 
-    > java -cp ./target/mei_cdn_server-1.0-SNAPSHOT.jar -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:/C:/*full path to project directory*/target/mei_cdn_server-1.0-SNAPSHOT.jar -Djava.security.policy=./src/main/resources/grant.policy estg.ipp.pt.mei_cdn_server.*server_implementation_class*
+    > java -cp ./target/mei_cdn_server-1.0-SNAPSHOT.jar -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:/C:/*full path to project directory*/target/mei_cdn_server-1.0-SNAPSHOT.jar -Djava.security.policy=./src/main/resources/grant.policy estg.ipp.pt.mei_cdn_server.*server_implementation_class* -->
