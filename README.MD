@@ -1,4 +1,4 @@
-# MEI | CDN 2021-2022 | GLOBAL MODULE MANAGEMENT NOT WORKING CORRECTLY
+# MEI | CDN 2021-2022
 Simple IRC - Using Java RMI
 
 <!-- <h2>Project Modules | Clean and Install maven dependencies</h2>

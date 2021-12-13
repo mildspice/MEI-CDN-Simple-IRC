@@ -1,56 +1,40 @@
 # MEI | CDN 2021-2022
 Simple IRC Client - Using Java RMI
 
-<h2>Build and Execute:</h2>
+<h2>Project Modules | Clean and Install maven dependencies</h2>
 
-- Clone the project and open a terminal inside the project's source code directory (usually named 'src')
-
-
-- Run the following commands:
-
-    > rmiregistry
-
-    > java -Djava.security.policy=./main/resources/grant.policy estg.ipp.pt.code_mei_client
-
-# MEI | CDN 2021-2022
-Simple IRC Client - Using Java RMI
-
-<h2>Build and Execute:</h2>
-
-- Clone the project and open a terminal inside the project's directory (usually right before the 'src' directory)
+- Clone the project and open a terminal inside the project directory (where the pom.xml file is located)
 
 - Run the following commands to build the application (maven):
   
-    > mvn clean
+    > mvn clean install package
 
-    > mvn package
+<br>
+
+<h2>Build and Execute the Server module:</h2>
+
+- Make sure you keep on the same directory (where the pom.xml file is located)
 
 - Run the following commands on another terminal window, on the same path:
 
     > cd target/classes
 
     ~~*If compiling RMI clases is required:*<br>
-    rmic -classpath ./target/classes/ -d ./target/classes/ estg.ipp.pt.mei_cdn_client.*client_implementation_class*~~
+    rmic -classpath ./target/classes/ -d ./target/classes/ estg.ipp.pt.mei_cdn_server.*server_implementation_class*~~
 
     > rmiregistry
 
-- Run the following commands to run the application:
+- Run the following commands on the main terminal window to run the application:
 
     > cd target/classes
 
-    > java -Djava.rmi.server.useCodebaseOnly=false -Djava.security.policy=../../src/main/resources/grant.policy estg.ipp.pt.mei_cdn_client.*client_implementation_class*
+    > java -Djava.security.policy=../../src/main/resources/grant.policy estg.ipp.pt.mei_cdn_server.*server_implementation_class*
 
 <br>
 
 <h2>Build and Execute (without being inside the generated classes path):</h2>
 
-- Clone the project and open a terminal inside the project's directory (usually right before the 'src' directory)
-
-- Run the following commands to build the application (maven):
-  
-    > mvn clean
-
-    > mvn package
+- Make sure you keep on the same directory (where the pom.xml file is located)
 
 - Run the following commands on another terminal window, on the same path:
 
@@ -58,4 +42,4 @@ Simple IRC Client - Using Java RMI
 
 - Run the following commands to run the application:
 
-    > java -cp ./target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:/C:/*full path to project directory*/target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.security.policy=./src/main/resources/grant.policy estg.ipp.pt.mei_cdn_client.*client_implementation_class*
+    > java -cp ./target/mei_cdn_server-1.0-SNAPSHOT.jar -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:/C:/*full path to project directory*/target/mei_cdn_server-1.0-SNAPSHOT.jar -Djava.security.policy=./src/main/resources/grant.policy estg.ipp.pt.mei_cdn_server.*server_implementation_class*
