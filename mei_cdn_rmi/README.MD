@@ -1,8 +1,6 @@
 # MEI | CDN 2021-2022
 Simple IRC - Using Java RMI
 
-<br>
-
 ## Project Modules | Clean and Install maven dependencies
 
 - Clone the project and open a terminal inside the project's directory (where the project modules mei_cdn_client, mei_cdn_server and mei_cdn_rmi_interfaces are located)
@@ -21,9 +19,20 @@ Simple IRC - Using Java RMI
 
 - Or, Run the following commands on a terminal window to run the application:
 
-    > java -cp ./target/mei_cdn_server-1.0-SNAPSHOT.jar -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:./target/mei_cdn_server-1.0-SNAPSHOT.jar -Djava.security.policy=./src/main/resources/grant.policy estg.ipp.pt.mei_cdn_server.*server_implementation_class*
+    ### Server
+    > java -cp ./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; <br>&emsp;-Djava.rmi.server.useCodebaseOnly=false <br>&emsp;-Djava.rmi.server.codebase="file:./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar file:./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar" <br>&emsp;-Djava.security.policy=./target/classes/grant.policy <br>&emsp;*\*class_package\**.*\*server_implementation_class\** *\*host\** *\*rmi_interface\**
 
-    > java -cp ./target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:./target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.security.policy=./src/main/resources/grant.policy estg.ipp.pt.mei_cdn_client.*client_implementation_class*
+    E.g.:
+    > java -cp ./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase="file:./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar file:./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar" -Djava.security.policy=./mei_cdn_server/target/classes/grant.policy TestServerImpl localhost TestServer
+
+    ---
+    
+    ### Client
+    > java -cp ./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; <br>&emsp;-Djava.rmi.server.useCodebaseOnly=false <br>&emsp;-Djava.rmi.server.codebase=file:./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar <br>&emsp;-Djava.security.policy=./mei_cdn_client/target/classes/grant.policy <br>&emsp;*\*class_package\**.*\*client_implementation_class\** *\*host\** *\*rmi_interface\**
+
+    E.g.:
+    > java -cp ./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.security.policy=./mei_cdn_client/target/classes/grant.policy TestClient localhost TestServer
+
 
 <!-- <h2>Project Modules | Clean and Install maven dependencies</h2>
 

@@ -17,14 +17,20 @@ public class TestServerImpl extends UnicastRemoteObject implements TestServer {
   public static void main (String args[]) throws Exception {
     try{
 			LocateRegistry.createRegistry(1099);
-			System.out.println("RMI Server ready");
+			System.out.println("RMI Server ready - listening on port 1099");
 		}
 		catch(RemoteException e) {
 			e.printStackTrace();
 		}
 
+    String host = "localhost", rmi_class = "TestServer";
+    if (args.length == 2) {
+      host = args[0];
+      rmi_class = args[1];
+    }
+
     //System.setSecurityManager(new RMISecurityManager());
     TestServerImpl dateS = new TestServerImpl();
-    Naming.bind("rmi://127.0.0.1/TestServer", dateS);
+    Naming.bind("rmi://" + host + "/" + rmi_class, dateS);
   }
 }
