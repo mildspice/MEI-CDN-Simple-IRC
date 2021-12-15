@@ -23,7 +23,7 @@ Simple IRC - Using Java RMI
     > java -cp ./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; <br>&emsp;-Djava.rmi.server.useCodebaseOnly=false <br>&emsp;-Djava.rmi.server.codebase="file:./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar file:./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar" <br>&emsp;-Djava.security.policy=./target/classes/grant.policy <br>&emsp;*\*class_package\**.*\*server_implementation_class\** *\*host\** *\*rmi_interface\**
 
     E.g.:
-    > java -cp ./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase="file:./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar file:./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar" -Djava.security.policy=./mei_cdn_server/target/classes/grant.policy TestServerImpl localhost TestServer
+    > java -cp ./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase="file:./mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar file:./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar" -Djava.security.policy=./mei_cdn_server/target/classes/grant.policy DummyServer localhost DummyInterface
 
     ---
     
@@ -31,7 +31,7 @@ Simple IRC - Using Java RMI
     > java -cp ./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; <br>&emsp;-Djava.rmi.server.useCodebaseOnly=false <br>&emsp;-Djava.rmi.server.codebase=file:./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar <br>&emsp;-Djava.security.policy=./mei_cdn_client/target/classes/grant.policy <br>&emsp;*\*class_package\**.*\*client_implementation_class\** *\*host\** *\*rmi_interface\**
 
     E.g.:
-    > java -cp ./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.security.policy=./mei_cdn_client/target/classes/grant.policy TestClient localhost TestServer
+    > java -cp ./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.security.policy=./mei_cdn_client/target/classes/grant.policy DummyClient localhost DummyInterface
 
 
 <!-- <h2>Project Modules | Clean and Install maven dependencies</h2>
