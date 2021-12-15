@@ -5,9 +5,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class DummyServer extends UnicastRemoteObject implements DummyInterface {
+public class Server extends UnicastRemoteObject implements DummyInterface {
 
-  public DummyServer() throws RemoteException {
+  public Server() throws RemoteException {
   }
 
   public Date getDate() {
@@ -15,11 +15,10 @@ public class DummyServer extends UnicastRemoteObject implements DummyInterface {
   }
 
   private static void startRmiRegistry(int port) {
-    try{
+    try {
 			LocateRegistry.createRegistry(1099);
 			System.out.println("RMI Server ready - listening on port " + port);
-		}
-		catch(RemoteException e) {
+		} catch(RemoteException e) {
       System.err.println("Error loading RMI registry!\n---\n" + e);
 		}
   }
@@ -35,7 +34,7 @@ public class DummyServer extends UnicastRemoteObject implements DummyInterface {
 
     // # not required in Java 14
     // System.setSecurityManager(new RMISecurityManager());
-    DummyServer dateS = new DummyServer();
+    Server dateS = new Server();
     Naming.bind("rmi://" + host + "/" + rmi_class, dateS);
     System.out.println("RMI URL: " + "rmi://" + host + "/" + rmi_class);
   }

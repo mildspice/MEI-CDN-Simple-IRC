@@ -1,6 +1,6 @@
 import java.rmi.Naming;
 
-public class DummyClient {
+public class Client {
 
     public static void main (String args[]) throws Exception {
 		String host = "localhost", rmi_class = "DummyInterface";
