@@ -1,2 +1,2 @@
-java -cp ./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.security.policy=./mei_cdn_client/target/classes/grant.policy TestClient localhost
+java -cp ./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar;./mei_cdn_rmi_interfaces/target/mei_cdn_rmi_interfaces-1.0-SNAPSHOT.jar; -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=file:./mei_cdn_client/target/mei_cdn_client-1.0-SNAPSHOT.jar -Djava.security.policy=./mei_cdn_client/target/classes/grant.policy Client localhost
 pause
