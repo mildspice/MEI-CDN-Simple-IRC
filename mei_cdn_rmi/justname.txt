@@ -1,0 +1,4 @@
+getActiveSplashScreens (chamar serviço do Edvaldo e guardar em cache)
+checkIfOutage
+checkIfActiveFSS
+WidgetsPFM
