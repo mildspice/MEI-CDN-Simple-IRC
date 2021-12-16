@@ -11,12 +11,11 @@ public class FileClient extends UnicastRemoteObject implements FileClientInterfa
 
     protected FileClient() throws RemoteException {
         super();
-
     }
 
-    public boolean downloadFileFromServer(FileServerInterface fServer, String path) throws RemoteException {
-        byte [] data = fServer.downloadFileFromServer(path);
-        File clientpathfile = new File(path);
+    public boolean downloadFileFromServer(FileServerInterface fServer, String serverPath, String clientPath) throws RemoteException {
+        byte [] data = fServer.downloadFileFromServer(serverPath);
+        File clientpathfile = new File(clientPath);
         FileOutputStream out;
         try {
             out = new FileOutputStream(clientpathfile);
@@ -29,18 +28,17 @@ public class FileClient extends UnicastRemoteObject implements FileClientInterfa
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        }				
-       
+        }				   
         return true;
     }
 
-    public byte[] uploadFileToServer(FileServerInterface fServer, String path) throws RemoteException {
-        File clientpathfile = new File(path);
+    public byte[] uploadFileToServer(FileServerInterface fServer, String serverPath, String clientPath) throws RemoteException {
+        File clientpathfile = new File(clientPath);
         byte [] data=new byte[(int) clientpathfile.length()];
         try{
         FileInputStream in=new FileInputStream(clientpathfile);		
          in.read(data, 0, data.length);					 
-         fServer.uploadFileToServer(data, path, (int) clientpathfile.length());        
+         fServer.uploadFileToServer(data, serverPath, (int) clientpathfile.length());        
          in.close();
         }catch (FileNotFoundException e) {     
             e.printStackTrace();
