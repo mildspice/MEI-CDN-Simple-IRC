@@ -1,1 +1,12 @@
 .vscode
+.idea/MEI-CDN-Simple-IRC.iml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+mei_cdn_server/target/mei_cdn_server-1.0-SNAPSHOT.jar
+mei_cdn_server/target/classes/grant.policy
+mei_cdn_server/target/classes/estg/ipp/pt/mei_cdn_server/TestServer.class
+mei_cdn_server/target/classes/estg/ipp/pt/mei_cdn_server/TestServerImpl.class
+mei_cdn_server/target/maven-archiver/pom.properties
+mei_cdn_server/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+mei_cdn_server/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
