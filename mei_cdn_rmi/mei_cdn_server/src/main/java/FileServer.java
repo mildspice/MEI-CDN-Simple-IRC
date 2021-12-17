@@ -5,45 +5,70 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
-public class FileServer extends UnicastRemoteObject implements FileServerInterface{
+public class FileServer extends UnicastRemoteObject implements FileServerInterface {
+
+    private FileManagement fileManager;
 
     protected FileServer() throws RemoteException {
         super();
-        //TODO Auto-generated constructor stub
+        fileManager = new FileManagement();
+        // TODO Auto-generated constructor stub
     }
 
     public boolean uploadFileToServer(byte[] data, String serverPath, int length) throws RemoteException {
-    	try {
-    		File serverPathFile = new File(serverPath);
-    		FileOutputStream out=new FileOutputStream(serverPathFile);
-    		byte [] bdata=data;			
-    		out.write(bdata);
-			out.flush();
-	    	out.close();
-		} catch (IOException e) {			
-			e.printStackTrace();
+        try {
+            if (fileManager.lookupFile(serverPath)) {
+                Date date = Calendar.getInstance().getTime();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hhmmdss");
+                String strDate = dateFormat.format(date).trim();
+                serverPath = serverPath + strDate;           
+            }
+            serverPath = serverPath.replaceAll("\\s", "");
+            System.out.println("Saving File: "+serverPath);
+            File serverPathFile = new File(serverPath);
+            FileOutputStream out = new FileOutputStream(serverPathFile);
+            byte[] bdata = data;
+            out.write(bdata);
+            out.flush();
+            out.close();
+            fileManager.addFile(serverPath);
+        } catch (IOException e) {
+            e.printStackTrace();
             return false;
-		}
+        }
         return true;
     }
 
     public byte[] downloadFileFromServer(String serverPath) throws RemoteException {
-        byte [] data;			
-        File serverpathfile = new File(serverPath);
-        data=new byte[(int) serverpathfile.length()];
-        FileInputStream in;
-        try {
-            in = new FileInputStream(serverpathfile);
-            in.read(data, 0, data.length);
-            in.close();
-        } catch (FileNotFoundException e) {     
-            e.printStackTrace();
-        }	
-        catch (IOException e) {        
-            e.printStackTrace();
-        }	
-        return data;
+        if (fileManager.lookupFile(serverPath)) {
+            byte[] data;
+            File serverpathfile = new File(serverPath);
+            data = new byte[(int) serverpathfile.length()];
+            FileInputStream in;
+            try {
+                in = new FileInputStream(serverpathfile);
+                in.read(data, 0, data.length);
+                in.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return data;
+        } else {
+            return null;
+        }
     }
-    
+
+    @Override
+    public List<String> listAllFiles() throws RemoteException {
+        return fileManager.listFiles();
+    }
+
 }
