@@ -47,8 +47,11 @@ public class Server extends UnicastRemoteObject implements DummyInterface {
 
     UserManagement shared = new UserManagement();
     AuthServer auth = new AuthServer(shared);
+    FileServer fileServer = new FileServer();
     Naming.bind("rmi://" + host + "/AuthServer", auth);
     System.out.println("> Successfully registered RMI interface - rmi://" + host + "/AuthServer");
+    Naming.bind("rmi://" + host + "/FileServer", fileServer);
+    System.out.println("> Successfully registered RMI interface - rmi://" + host + "/FileServer");
   }
 
   // public static void main (String args[]) throws Exception {
