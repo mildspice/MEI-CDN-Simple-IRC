@@ -12,8 +12,9 @@ public class Client {
 
 		AuthInterface auth = (AuthInterface) Naming.lookup("rmi://" + host + "/AuthServer");
 		System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/AuthServer");
-
+		FileServerInterface fileServer = (FileServerInterface) Naming.lookup("rmi://" + host + "/FileServer");;
 		ChatClient chat = new ChatClient();
+		FileClient fileClient = new FileClient();
 		//UnicastRemoteObject.exportObject(chat, 1099);
 		System.out.println(auth.login("test", chat));
 
