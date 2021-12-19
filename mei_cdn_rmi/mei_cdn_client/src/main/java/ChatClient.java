@@ -1,5 +1,7 @@
+import java.awt.Color;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class ChatClient extends UnicastRemoteObject implements ChatClientInterface {
@@ -9,13 +11,16 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
     }
 
     @Override
-    public void publicChatMessage(String username, String message) throws RemoteException {
-        // TODO Auto-generated method
+    public void chatMessage(String username, String message) throws RemoteException {
+        ClientGUI.appendToChatBoardPanel("GENERAL", Color.blue);
+        ClientGUI.appendToChatBoardPanel(" | ", Color.black);
+        ClientGUI.appendToChatBoardPanel(username, Color.blue);
+        ClientGUI.appendToChatBoardPanel(" " + message, Color.black);
     }
 
     @Override
     public void updateOnlineUsers(Collection<String> userNames) throws RemoteException {
-        // TODO Auto-generated method
+        ClientGUI.onlineUsersPanel(new ArrayList<>(userNames));
     }
     
 }

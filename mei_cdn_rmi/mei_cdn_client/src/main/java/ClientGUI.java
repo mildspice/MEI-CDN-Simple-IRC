@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -17,11 +18,15 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
-
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 public class ClientGUI {
 
@@ -34,7 +39,7 @@ public class ClientGUI {
 	private static Border blankBorder = BorderFactory.createEmptyBorder(10,10,20,10);
     private static JList<String> onlineUsers;
     private static DefaultListModel<String> listModel;
-    private static JTextArea chatBoard;
+    private static JTextPane chatBoard;
     private static JButton privateMsgBtn, loginBtn, msgBtn, sendFileBtn;
     private static JPanel clientPanel, userPanel;
 
@@ -49,10 +54,10 @@ public class ClientGUI {
             try {
                 if (click.getSource() == loginBtn){
                     user = messageInput.getText();				
-                    if (user.length() != 0){
+                    if (user.length() != 0) {
                         guiFrame.setTitle("Hello " + user + "!");
                         messageInput.setText("");
-                        chatBoard.append("SERVER> You are being connected to chat, hold a moment ...\n");
+                        appendToChatBoardPanel("SERVER> You are being connected to chat, hold a moment ...\n", Color.green);
 
                         String cleanUsername = user.replaceAll("\\s+","_").replaceAll("\\W+","_");
                         clientChatStub = new ChatClient();
@@ -62,7 +67,7 @@ public class ClientGUI {
                         } else {
                             loginBtn.setEnabled(false);
                             msgBtn.setEnabled(true);
-                            chatBoard.append("SERVER> Logged in successfuly! You may start chatting.\n");
+                            appendToChatBoardPanel("SERVER> Logged in successfuly! You may start chatting.\n", Color.green);
                         }
                     } else{
                         JOptionPane.showMessageDialog(guiFrame, "> Username required!");
@@ -73,7 +78,7 @@ public class ClientGUI {
                     messageInput.setText("");
                     // TODO implement send a public chat message
                     // sendMessage(message); to server
-                    System.out.println("> Chat message from " + user + ": " + message + "\n");
+                    System.out.println("> Chat message from " + user + ": " + message);
 
                 } else if(click.getSource() == privateMsgBtn){
                     List<String> selectedUsers = onlineUsers.getSelectedValuesList();
@@ -90,6 +95,8 @@ public class ClientGUI {
     };
 
     public static void openChatMainWindow(AuthInterface authStub) {
+        if (guiFrame != null && guiFrame.isVisible()) return;
+
         serverAuthStub = authStub;
         guiFrame = new JFrame("Simple IRC");
 
@@ -127,48 +134,22 @@ public class ClientGUI {
 		guiFrame.setVisible(true);
     }
 
-	public static JPanel setChatBoardPanel() {
-		chatBoard = new JTextArea("SERVER> Welcome!\nSERVER> Enter a unique username below and press SIGN UP to begin.\n.\n.\n.\n", 14, 34);
-		chatBoard.setMargin(new Insets(10, 10, 10, 10));
-		chatBoard.setFont(msgFont);
-		
-		chatBoard.setLineWrap(true);
-		chatBoard.setWrapStyleWord(true);
-		chatBoard.setEditable(false);
-		JScrollPane scrollPane = new JScrollPane(chatBoard);
-        scrollPane.setPreferredSize(new Dimension(515, 350));
-		chatBoardPanel = new JPanel();
-		chatBoardPanel.add(scrollPane);
-	
-		chatBoardPanel.setFont(msgFont);
-		return chatBoardPanel;
-	}
-	
-	public static JPanel setChatInputsPanel() {
-		chatInputPanel = new JPanel(new GridLayout(1, 1, 1, 5));
-		chatInputPanel.setBorder(blankBorder);	
-		messageInput = new JTextField();
-		messageInput.setFont(msgFont);
-		chatInputPanel.add(messageInput);
-		return chatInputPanel;
-	}
+    public static void appendToChatBoardPanel(String msg, Color c) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
-	public static JPanel setOnlineUsersPanel() {
-		userPanel = new JPanel(new BorderLayout());
-		JLabel userLabel = new JLabel("ONLINE", JLabel.CENTER);
-		userPanel.add(userLabel, BorderLayout.NORTH);	
-		userLabel.setFont(listFont);
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "monospaced");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
 
-		onlineUsersPanel(List.of("No one's here :'("));
+        int len = chatBoard.getDocument().getLength();
+        chatBoard.setCaretPosition(len);
+        chatBoard.setCharacterAttributes(aset, false);
+        chatBoard.replaceSelection(msg);
+    }
 
-		clientPanel.setFont(msgFont);
-		userPanel.add(buttonsPanel(), BorderLayout.SOUTH);		
-		userPanel.setBorder(blankBorder);
+    public static void onlineUsersPanel(List<String> currClients) {
+        if (clientPanel != null) userPanel.remove(clientPanel);
 
-		return userPanel;		
-	}
-
-    public static void onlineUsersPanel(List<String> currClients) {  	
     	clientPanel = new JPanel(new BorderLayout());
         listModel = new DefaultListModel<String>();
         
@@ -188,9 +169,58 @@ public class ClientGUI {
 
         clientPanel.add(listScrollPane, BorderLayout.CENTER);
         userPanel.add(clientPanel, BorderLayout.CENTER);
+        userPanel.repaint();
+        userPanel.revalidate();
     }
+
+    private static JPanel setChatBoardPanel() {
+        EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 10, 10));
+		chatBoard = new JTextPane();
+		chatBoard.setMargin(new Insets(10, 10, 10, 10));
+
+		chatBoard.setFont(msgFont);
+        chatBoard.setBorder(eb);
+        //tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+
+        appendToChatBoardPanel("SERVER> Welcome!\nSERVER> Enter a unique username below and press SIGN UP to begin.\n...\n", Color.GREEN.darker().darker());
+		
+		//chatBoard.setLineWrap(true);
+		//chatBoard.setWrapStyleWord(true);
+		chatBoard.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(chatBoard);
+        scrollPane.setPreferredSize(new Dimension(515, 350));
+		chatBoardPanel = new JPanel();
+		chatBoardPanel.add(scrollPane);
 	
-	public static JPanel buttonsPanel() {		
+		chatBoardPanel.setFont(msgFont);
+		return chatBoardPanel;
+	}
+
+    private static JPanel setChatInputsPanel() {
+		chatInputPanel = new JPanel(new GridLayout(1, 1, 1, 5));
+		chatInputPanel.setBorder(blankBorder);	
+		messageInput = new JTextField();
+		messageInput.setFont(msgFont);
+		chatInputPanel.add(messageInput);
+		return chatInputPanel;
+	}
+
+    private static JPanel setOnlineUsersPanel() {
+		userPanel = new JPanel(new BorderLayout());
+		JLabel userLabel = new JLabel("ONLINE", JLabel.CENTER);
+		userPanel.add(userLabel, BorderLayout.NORTH);	
+		userLabel.setFont(listFont);
+
+		onlineUsersPanel(List.of("No one's here :'("));
+
+		clientPanel.setFont(msgFont);
+		userPanel.add(buttonsPanel(), BorderLayout.SOUTH);		
+		userPanel.setBorder(blankBorder);
+
+		return userPanel;		
+	}
+	
+	private static JPanel buttonsPanel() {		
 		msgBtn = new JButton("Message");
 		msgBtn.addActionListener(temp);
 		msgBtn.setEnabled(false);

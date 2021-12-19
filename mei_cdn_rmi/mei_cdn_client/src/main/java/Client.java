@@ -30,7 +30,7 @@ public class Client {
 
           @Override
           public void run() {
-            System.out.print("> Opening GUI ...");
+            System.out.println("> Opening GUI ...");
             ClientGUI.openChatMainWindow(auth);
           }
         });
