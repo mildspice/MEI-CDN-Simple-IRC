@@ -46,8 +46,9 @@ public class Server extends UnicastRemoteObject implements DummyInterface {
     startRmiRegistry(Integer.parseInt(port)); 
 
     UserManagement shared = new UserManagement();
-    AuthServer auth = new AuthServer(shared);
-    ChatServer chat = new ChatServer(shared);
+    MessageHistory messageHistory = new MessageHistory();
+    AuthServer auth = new AuthServer(shared, messageHistory);
+    ChatServer chat = new ChatServer(shared, messageHistory);
     FileServer fileServer = new FileServer();
     Naming.bind("rmi://" + host + "/AuthServer", auth);
     System.out.println("> Successfully registered RMI interface - rmi://" + host + "/AuthServer");

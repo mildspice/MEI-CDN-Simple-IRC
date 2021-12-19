@@ -31,7 +31,7 @@ public class UserManagement {
     public synchronized void sendMessageToAll(Message message) {
         for (User user : users.values()) {
             try {
-                user.getChatClientInterface().chatMessage(message); 
+                user.getChatClientInterface().chatMessage(message);
             } catch (RemoteException e) {
                 System.err.println("--- ERR\n> Error updating online users to client - " + user.getUsername() + "\n---");
             }

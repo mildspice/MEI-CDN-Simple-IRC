@@ -5,15 +5,17 @@ import java.util.List;
 
 public class ChatServer extends UnicastRemoteObject implements ChatServerInterface {
     private UserManagement userManagement;
-
-    protected ChatServer(UserManagement shared) throws RemoteException {
+    private MessageHistory messageHistory;
+    protected ChatServer(UserManagement shared, MessageHistory messageHistory) throws RemoteException {
         super();
         this.userManagement = shared;
+        this.messageHistory = messageHistory;
     }
 
     @Override
     public void updateChat(Message message) throws RemoteException {
         userManagement.sendMessageToAll(message);
+        addHistoryToAllUsers(message);
     }
 
     @Override
@@ -23,6 +25,12 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
             user.getChatClientInterface().chatMessage(message);
 		}
 
+    }
+
+    private void addHistoryToAllUsers(Message message){
+        for(User user : userManagement.getAllUsers()){
+            messageHistory.addUserMessage(user.getUsername(), message);
+        }
     }
 
 }
