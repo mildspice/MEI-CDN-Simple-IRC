@@ -29,10 +29,4 @@ public class AuthServer extends UnicastRemoteObject implements AuthInterface {
             return false;
         }
     }
-
-    @Override
-    public List<String> getMessageHistory() throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }
