@@ -9,14 +9,8 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
     }
 
     @Override
-    public void chatMessage(String username, String message, boolean isPrivate) throws RemoteException {
-        String parsedMessage;
-        if (isPrivate){
-            parsedMessage = "PM from " + username + ": " + message;
-        }else{
-            parsedMessage = username + ": " + message;
-        }
-        System.out.println(parsedMessage);
+    public void chatMessage(Message message) throws RemoteException {
+        // TODO Auto-generated method
     }
 
     @Override

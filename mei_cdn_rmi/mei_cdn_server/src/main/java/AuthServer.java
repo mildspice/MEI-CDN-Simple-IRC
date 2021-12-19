@@ -7,7 +7,7 @@ public class AuthServer extends UnicastRemoteObject implements AuthInterface {
 
     public AuthServer(UserManagement shared) throws RemoteException {
         super();
-        this.userManagement = shared;
+        this.userManagement = shared;   
     }
 
     public boolean login(String username, ChatClientInterface msgHandler) {

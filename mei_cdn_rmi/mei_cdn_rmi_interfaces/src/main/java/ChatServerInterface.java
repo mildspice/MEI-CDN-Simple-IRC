@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface ChatServerInterface extends Remote {
     
-	public void updateChat(String userName, String chatMessage)throws RemoteException;
+	public void updateChat(Message message)throws RemoteException;
 
-    public void sendPM(String senderUsername, List<String> userList, String privateMessage) throws RemoteException;
+    public void sendPM(List<String> userList, Message message) throws RemoteException;
 
 }

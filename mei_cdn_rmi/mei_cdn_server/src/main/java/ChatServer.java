@@ -12,15 +12,15 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
     }
 
     @Override
-    public void updateChat(String userName, String chatMessage) throws RemoteException {
-        userManagement.sendMessageToAll(userName, chatMessage);
+    public void updateChat(Message message) throws RemoteException {
+        userManagement.sendMessageToAll(message);
     }
 
     @Override
-    public void sendPM(String senderUsername, List<String> userList, String privateMessage) throws RemoteException {    
+    public void sendPM(List<String> userList, Message message) throws RemoteException {    
 		for(String u : userList){
             User user = userManagement.getUser(u);
-            user.getChatClientInterface().chatMessage(senderUsername, privateMessage, true);
+            user.getChatClientInterface().chatMessage(message);
 		}
 
     }
