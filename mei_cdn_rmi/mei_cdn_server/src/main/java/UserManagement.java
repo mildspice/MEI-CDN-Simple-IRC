@@ -1,4 +1,5 @@
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,15 +26,16 @@ public class UserManagement {
     }
 
     public Collection<String> getUserNames() {
-        return users.keySet();
+        return new ArrayList<>(users.keySet());
     }
 
     public synchronized void sendMessageToAll(String who, String message) {
         for (User user : users.values()) {
             try {
-                user.getChatClientInterface().publicChatMessage(who, message); 
+                user.getChatClientInterface().chatMessage(who, message); 
             } catch (RemoteException e) {
                 System.err.println("--- ERR\n> Error updating online users to client - " + user.getUsername() + "\n---");
+                e.printStackTrace();
             }
         }
     }
@@ -41,9 +43,10 @@ public class UserManagement {
     public synchronized void sendOnlineUsersUpdatedListToAll() {
         for (User user : users.values()) {
             try {
-                user.getChatClientInterface().updateOnlineUsers(users.keySet()); 
+                user.getChatClientInterface().updateOnlineUsers(new ArrayList<>(users.keySet()));
             } catch (RemoteException e) {
                 System.err.println("--- ERR\n> Error updating online users to client - " + user.getUsername() + "\n---");
+                e.printStackTrace();
             }
         }
     }

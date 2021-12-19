@@ -14,4 +14,9 @@ public class User {
     public ChatClientInterface getChatClientInterface() {
         return clientMsgHandler;
     }
+
+    @Override
+    public String toString() {
+        return "{ username: " + username + ", msgHandler: " + clientMsgHandler + " }";
+    }
 }
