@@ -33,7 +33,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 	 * LOCAL METHODS
 	 */	
 	public static void main(String[] args) {
-		//startRMIRegistry();	
+		startRMIRegistry();	
 		String hostName = "localhost";
 		String serviceName = "GroupChatService";
 		

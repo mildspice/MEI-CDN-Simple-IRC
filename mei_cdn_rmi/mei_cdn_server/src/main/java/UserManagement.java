@@ -28,7 +28,7 @@ public class UserManagement {
         return users.keySet();
     }
 
-    public void sendMessageToAll(String who, String message) {
+    public synchronized void sendMessageToAll(String who, String message) {
         for (User user : users.values()) {
             try {
                 user.getChatClientInterface().publicChatMessage(who, message); 
@@ -38,7 +38,7 @@ public class UserManagement {
         }
     }
 
-    public void sendOnlineUsersUpdatedListToAll() {
+    public synchronized void sendOnlineUsersUpdatedListToAll() {
         for (User user : users.values()) {
             try {
                 user.getChatClientInterface().updateOnlineUsers(users.keySet()); 
