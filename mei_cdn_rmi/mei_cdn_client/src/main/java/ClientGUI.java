@@ -6,7 +6,9 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.rmi.RemoteException;
+import java.time.Instant;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -18,6 +20,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
@@ -45,13 +48,15 @@ public class ClientGUI {
     // # RMI | IRC fields
     private static String user, message;
     private static AuthInterface serverAuthStub;
+    private static FileServerInterface serverFileStub;
     private static ChatClient clientChatStub;
+    private static FileClient clientFileManager;
 
     private static ActionListener temp = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent click) {
             try {
-                if (click.getSource() == loginBtn){
+                if (click.getSource() == loginBtn) {
                     user = messageInput.getText();				
                     if (user.length() != 0) {
                         guiFrame.setTitle("Hello " + user + "!");
@@ -60,28 +65,51 @@ public class ClientGUI {
 
                         String cleanUsername = user.replaceAll("\\s+","_").replaceAll("\\W+","_");
                         clientChatStub = new ChatClient();
+                        clientFileManager = new FileClient();
                         if (!serverAuthStub.login(cleanUsername, clientChatStub)) {
                             JOptionPane.showMessageDialog(guiFrame, "> Error logging in.\nPlease try again later or use a a different username", 
                                 "Login failed", JOptionPane.ERROR_MESSAGE);
                         } else {
                             loginBtn.setEnabled(false);
                             msgBtn.setEnabled(true);
+                            sendFileBtn.setEnabled(true);
+                            privateMsgBtn.setEnabled(true);
                             appendToChatBoardPanel("SERVER> Logged in successfuly! You may start chatting.\n", Color.green);
                         }
                     } else{
                         JOptionPane.showMessageDialog(guiFrame, "> Username required!");
                     }
 
-                } else if(click.getSource() == msgBtn){
+                } else if (click.getSource() == msgBtn) {
                     message = messageInput.getText();
                     messageInput.setText("");
-                    // TODO implement send a public chat message
+                    // TODO implement send a public chat message using ChatServer STUB
                     // sendMessage(message); to server
                     System.out.println("> Chat message from " + user + ": " + message);
 
-                } else if(click.getSource() == privateMsgBtn){
+                } else if (click.getSource() == sendFileBtn) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+                    int returnValue = fileChooser.showOpenDialog(null);
+                    if (returnValue == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = fileChooser.getSelectedFile();
+                        String extension = selectedFile.getName().substring(selectedFile.getName().lastIndexOf(".")),
+                                name = selectedFile.getName().substring(0, selectedFile.getName().lastIndexOf("."));
+
+                        clientFileManager.uploadFileToServer(serverFileStub, name + "_" + Instant.now().toEpochMilli() + extension, selectedFile.getAbsolutePath());
+                        // TODO check if file was uploaded before sending chat message
+                        
+                        message = messageInput.getText();
+                        messageInput.setText("");
+                        // TODO implement send a public chat message using ChatServer STUB
+                        // sendMessage(message, fileName); to server
+                        System.out.println("> Chat message from " + user + ": " + message);
+                    }
+
+                } else if (click.getSource() == privateMsgBtn) {
                     //List<String> selectedUsers = onlineUsers.getSelectedValuesList();
-                    // TODO implement send a private chat message
+                    // TODO implement send a private chat message using ChatServer STUB
                     message = messageInput.getText();
                     messageInput.setText("");
                     // sendPrivateMessage(message, selectedUsers); to server
@@ -93,10 +121,11 @@ public class ClientGUI {
 	    }
     };
 
-    public static void openChatMainWindow(AuthInterface authStub) {
+    public static void openChatMainWindow(AuthInterface authStub, FileServerInterface filesStub) {
         if (guiFrame != null && guiFrame.isVisible()) return;
 
         serverAuthStub = authStub;
+        serverFileStub = filesStub;
         guiFrame = new JFrame("Simple IRC");
 
         guiFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -114,7 +143,7 @@ public class ClientGUI {
 		    }   
 		});
         guiFrame.setLocationByPlatform(true);
-        guiFrame.setAlwaysOnTop(true);
+        //guiFrame.setAlwaysOnTop(true);
         guiFrame.setResizable(false);
 		guiFrame.setLocation(150, 150);
         //guiFrame.setPreferredSize(new Dimension(700, 450));

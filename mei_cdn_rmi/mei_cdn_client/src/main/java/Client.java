@@ -23,10 +23,8 @@ public class Client {
 
         //ChatClient chat = new ChatClient();
         //UnicastRemoteObject.exportObject(chat, 1099);
-        FileServerInterface fileServer = (FileServerInterface) Naming.lookup("rmi://" + host + "/FileServer");
+        FileServerInterface files = (FileServerInterface) Naming.lookup("rmi://" + host + "/FileServer");
         System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/FileServer");
-
-        FileClient fileClient = new FileClient();
 
         //ClientGUI.openChatMainWindow();
         UIManager.setLookAndFeel(new NimbusLookAndFeel());
@@ -35,7 +33,7 @@ public class Client {
           @Override
           public void run() {
             System.out.println("> Opening GUI ...");
-            ClientGUI.openChatMainWindow(auth);
+            ClientGUI.openChatMainWindow(auth, files);
           }
         });
 
