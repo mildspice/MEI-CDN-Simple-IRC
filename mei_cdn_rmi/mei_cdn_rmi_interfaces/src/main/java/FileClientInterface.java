@@ -3,7 +3,7 @@ import java.util.List;
 
 public interface FileClientInterface {
 
-    public byte[] uploadFileToServer(FileServerInterface fServer, String serverPath, String clientPath) throws RemoteException;
+    public boolean uploadFileToServer(FileServerInterface fServer, String serverPath, String clientPath) throws RemoteException;
 	public boolean downloadFileFromServer(FileServerInterface fServer, String serverPath, String clientPath) throws RemoteException;
     public List<String> listAllFiles(FileServerInterface fServer) throws RemoteException;
 

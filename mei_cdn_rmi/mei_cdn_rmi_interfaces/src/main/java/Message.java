@@ -7,12 +7,22 @@ public class Message implements Serializable{
     private String message;
     private Instant date;
     private boolean isPM;
+    private String file; 
 
     public Message(String sender, String message, boolean isPM) {
         this.sender = sender;
         this.message = message;
         this.isPM = isPM;
         date = Instant.now();
+        file = "";
+    }
+
+    public Message(String sender, String message, boolean isPM, String filename) {
+        this.sender = sender;
+        this.message = message;
+        this.isPM = isPM;
+        date = Instant.now();
+        this.file = filename;
     }
 
     public String getSender(){
@@ -29,6 +39,14 @@ public class Message implements Serializable{
 
     public Instant getDate(){
         return date;
+    }
+
+    public boolean hasFile(){
+        return !file.isEmpty();
+    }
+
+    public String getFileName(){
+        return file;
     }
 
     @Override

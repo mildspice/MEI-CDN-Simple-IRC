@@ -37,7 +37,7 @@ public class FileClient extends UnicastRemoteObject implements FileClientInterfa
         return true;
     }
 
-    public byte[] uploadFileToServer(FileServerInterface fServer, String serverPath, String clientPath)
+    public boolean uploadFileToServer(FileServerInterface fServer, String serverPath, String clientPath)
             throws RemoteException {
         File clientpathfile = new File(clientPath);
         serverPath = fileNameValidator(serverPath, clientpathfile.getName());
@@ -49,12 +49,12 @@ public class FileClient extends UnicastRemoteObject implements FileClientInterfa
             in.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return null;
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
-        return data;
+        return true;
     }
 
     public List<String> listAllFiles(FileServerInterface fServer) throws RemoteException{
