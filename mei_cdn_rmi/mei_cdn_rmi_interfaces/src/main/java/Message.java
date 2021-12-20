@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -7,22 +8,25 @@ public class Message implements Serializable {
     private String message;
     private Instant date;
     private boolean isPM;
-    private String file; 
+    private String serverFileName; 
+    private File clientFile; 
 
     public Message(String sender, String message, boolean isPM) {
         this.sender = sender;
         this.message = message;
         this.isPM = isPM;
         date = Instant.now();
-        file = "";
+        serverFileName = "";
+        clientFile = null;
     }
 
-    public Message(String sender, String message, boolean isPM, String filename) {
+    public Message(String sender, String message, boolean isPM, String serverFileName, File clientFile) {
         this.sender = sender;
         this.message = message;
         this.isPM = isPM;
         date = Instant.now();
-        this.file = filename;
+        this.serverFileName = serverFileName;
+        this.clientFile = clientFile;
     }
 
     public String getSender(){
@@ -42,11 +46,15 @@ public class Message implements Serializable {
     }
 
     public boolean hasFile(){
-        return !file.isEmpty();
+        return !serverFileName.isEmpty() && clientFile != null;
     }
 
-    public String getFileName(){
-        return file;
+    public String getServerFileName(){
+        return serverFileName;
+    }
+
+    public File getClientFile(){
+        return clientFile;
     }
 
     @Override

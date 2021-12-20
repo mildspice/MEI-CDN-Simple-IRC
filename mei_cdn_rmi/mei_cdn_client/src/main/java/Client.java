@@ -42,7 +42,8 @@ public class Client {
       } catch (NotBoundException | MalformedURLException err) {
         System.out.println("> Server seems to be unavailable. NOT FOUND | rmi://" + host + "/AuthServer");
         err.printStackTrace();
-      } catch (UnsupportedLookAndFeelException exc) {
+      } 
+      catch (UnsupportedLookAndFeelException exc) {
         System.err.println("Nimbus: Unsupported Look and feel!");
       }
     }

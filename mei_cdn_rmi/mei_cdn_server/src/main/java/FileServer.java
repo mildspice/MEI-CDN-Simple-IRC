@@ -5,10 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class FileServer extends UnicastRemoteObject implements FileServerInterface {
@@ -22,13 +18,6 @@ public class FileServer extends UnicastRemoteObject implements FileServerInterfa
 
     public boolean uploadFileToServer(byte[] data, String serverPath, int length) throws RemoteException {
         try {
-            if (fileManager.lookupFile(serverPath)) {
-                Date date = Calendar.getInstance().getTime();
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hhmmdss");
-                String strDate = dateFormat.format(date).trim();
-                serverPath = serverPath + strDate;           
-            }
-            serverPath = serverPath.replaceAll("\\s", "");
             System.out.println("Saving File: "+serverPath);
             File serverPathFile = new File(serverPath);
             FileOutputStream out = new FileOutputStream(serverPathFile);

@@ -17,7 +17,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
 
     @Override
     public void updateChat(Message message) throws RemoteException {
-        if ((message.hasFile() && fileManager.lookupFile(message.getFileName())) || !message.hasFile()) {
+        if ((message.hasFile() && fileManager.lookupFile(message.getServerFileName())) || !message.hasFile()) {
             userManagement.sendMessageToAll(message);
             addHistoryToAllUsers(message);
         }
@@ -25,7 +25,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
 
     @Override
     public void sendPM(List<String> userList, Message message) throws RemoteException {
-        if ((message.hasFile() && fileManager.lookupFile(message.getFileName())) || !message.hasFile()) {
+        if ((message.hasFile() && fileManager.lookupFile(message.getServerFileName())) || !message.hasFile()) {
             for (String u : userList) {
                 User user = userManagement.getUser(u);
                 System.out.println(user.getUsername());

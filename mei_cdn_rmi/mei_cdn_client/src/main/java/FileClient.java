@@ -36,9 +36,8 @@ public class FileClient {
         return true;
     }
 
-    public boolean uploadFileToServer(FileServerInterface fServer, String serverPath, String clientPath)
+    public boolean uploadFileToServer(FileServerInterface fServer, String serverPath, File clientpathfile)
             throws RemoteException {
-        File clientpathfile = new File(clientPath);
         serverPath = fileNameValidator(serverPath, clientpathfile.getName());
         byte[] data = new byte[(int) clientpathfile.length()];
         try {
@@ -54,6 +53,12 @@ public class FileClient {
             return false;
         }
         return true;
+    }
+
+    public boolean uploadFileToServer(FileServerInterface fServer, String serverPath, String clientPath)
+            throws RemoteException {
+        File clientpathfile = new File(clientPath);
+        return uploadFileToServer(fServer, serverPath, clientpathfile);
     }
 
     public List<String> listAllFiles(FileServerInterface fServer) throws RemoteException{

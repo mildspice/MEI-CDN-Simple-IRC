@@ -34,8 +34,9 @@ public class UserManagement {
             try {
                 user.getChatClientInterface().chatMessage(message);
             } catch (RemoteException e) {
-                System.err.println("--- ERR\n> Error updating online users to client - " + user.getUsername() + "\n---");
-                e.printStackTrace();
+                System.out.println("--- ERR\n> Error updating messages to client - " + user.getUsername() 
+                        + "\n> Removing undefined client stub ...\n---");
+                removeUser(user.getUsername());
             }
         }
     }
@@ -45,8 +46,9 @@ public class UserManagement {
             try {
                 user.getChatClientInterface().updateOnlineUsers(new ArrayList<>(users.keySet()));
             } catch (RemoteException e) {
-                System.err.println("--- ERR\n> Error updating online users to client - " + user.getUsername() + "\n---");
-                e.printStackTrace();
+                System.out.println("--- ERR\n> Error updating online users to client - " + user.getUsername() 
+                        + "\n> Removing undefined client stub ...\n---");
+                removeUser(user.getUsername());
             }
         }
     }

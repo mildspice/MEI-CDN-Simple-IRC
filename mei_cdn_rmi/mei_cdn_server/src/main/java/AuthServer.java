@@ -17,6 +17,7 @@ public class AuthServer extends UnicastRemoteObject implements AuthInterface {
             // userManagement.sendMessageToAll("Server", username + " as logged into the general chat. Say hi!"); DEPRECATED
             userManagement.sendOnlineUsersUpdatedListToAll();
             messageHistory.sendUserHistory(userManagement.getUser(username));
+            System.out.println("> User " + username + " logged in");
             return true;
         } else {
             return false;
@@ -26,6 +27,7 @@ public class AuthServer extends UnicastRemoteObject implements AuthInterface {
     public boolean logout(String username) {
         if (userManagement.removeUser(username) != null) {
             userManagement.sendOnlineUsersUpdatedListToAll(); // update list of online users
+            System.out.println("> User " + username + " logged out");
             return true;
         } else {
             return false;
