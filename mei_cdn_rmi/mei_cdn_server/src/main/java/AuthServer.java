@@ -3,10 +3,12 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class AuthServer extends UnicastRemoteObject implements AuthInterface {
     private UserManagement userManagement;
+    private MessageHistory messageHistory;
 
-    public AuthServer(UserManagement shared) throws RemoteException {
+    public AuthServer(UserManagement shared, MessageHistory messageHistory) throws RemoteException {
         super();
-        this.userManagement = shared;
+        this.userManagement = shared;   
+        this.messageHistory = messageHistory;
     }
 
     public boolean login(String username, ChatClientInterface msgHandler) {
@@ -14,6 +16,7 @@ public class AuthServer extends UnicastRemoteObject implements AuthInterface {
             userManagement.addUser(new User(username, msgHandler));
             // userManagement.sendMessageToAll("Server", username + " as logged into the general chat. Say hi!"); DEPRECATED
             userManagement.sendOnlineUsersUpdatedListToAll();
+            messageHistory.sendUserHistory(userManagement.getUser(username));
             return true;
         } else {
             return false;

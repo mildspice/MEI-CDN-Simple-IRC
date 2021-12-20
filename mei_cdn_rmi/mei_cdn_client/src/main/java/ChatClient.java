@@ -11,10 +11,10 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
     }
 
     @Override
-    public void chatMessage(String username, String message) throws RemoteException {
+    public void chatMessage(Message message) throws RemoteException {
         ClientGUI.appendToChatBoardPanel("GENERAL", Color.blue);
         ClientGUI.appendToChatBoardPanel(" | ", Color.black);
-        ClientGUI.appendToChatBoardPanel(username, Color.blue);
+        ClientGUI.appendToChatBoardPanel(message.getSender(), Color.blue);
         ClientGUI.appendToChatBoardPanel(" " + message, Color.black);
     }
 
