@@ -7,7 +7,5 @@ public interface ChatClientInterface extends Remote {
     void chatMessage(Message message) throws RemoteException;
 
     void updateOnlineUsers(Collection<String> userNames) throws RemoteException;
-
-    // receção de ficheiro
-    // ...
+    
 }

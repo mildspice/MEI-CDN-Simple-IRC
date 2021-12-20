@@ -3,6 +3,9 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 public class Client {
 
@@ -21,23 +24,25 @@ public class Client {
         System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/ChatServer");
         //ChatClient chat = new ChatClient();
         //UnicastRemoteObject.exportObject(chat, 1099);
-        FileServerInterface fileServer = (FileServerInterface) Naming.lookup("rmi://" + host + "/FileServer");
+        FileServerInterface files = (FileServerInterface) Naming.lookup("rmi://" + host + "/FileServer");
         System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/FileServer");
-        FileClient fileClient = new FileClient();
 
         //ClientGUI.openChatMainWindow();
+        UIManager.setLookAndFeel(new NimbusLookAndFeel());
         SwingUtilities.invokeLater(new Runnable() {
 
           @Override
           public void run() {
-            System.out.print("> Opening GUI ...");
-            ClientGUI.openChatMainWindow(auth);
+            System.out.println("> Opening GUI ...");
+            ClientGUI.openChatMainWindow(auth, files);
           }
         });
 
       } catch (NotBoundException | MalformedURLException err) {
         System.out.println("> Server seems to be unavailable. NOT FOUND | rmi://" + host + "/AuthServer");
         err.printStackTrace();
+      } catch (UnsupportedLookAndFeelException exc) {
+        System.err.println("Nimbus: Unsupported Look and feel!");
       }
     }
 }
