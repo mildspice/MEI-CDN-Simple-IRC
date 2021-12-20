@@ -126,11 +126,12 @@ public class ClientGUI {
 
                     message = messageInput.getText();
                     messageInput.setText("");
-                    serverChatStub.updateChat(new Message(user, message, true));
+                    serverChatStub.sendPM(selectedUsers, new Message(user, message, true));
                 } else if (click.getSource() == privateMsgFileBtn) {
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
+                    List<String> selectedUsers = onlineUsers.getSelectedValuesList();
+                    selectedUsers.add(user);
                     int returnValue = fileChooser.showOpenDialog(null);
                     if (returnValue == JFileChooser.APPROVE_OPTION) {
                         File selectedFile = fileChooser.getSelectedFile();
@@ -141,7 +142,7 @@ public class ClientGUI {
                         if (clientFileManager.uploadFileToServer(serverFileStub, serverName, selectedFile)) {
                             message = messageInput.getText();
                             messageInput.setText("");
-                            serverChatStub.updateChat(new Message(user, message, true, serverName, selectedFile));
+                            serverChatStub.sendPM(selectedUsers, new Message(user, message, true, serverName, selectedFile));
                         }
                     }
 
