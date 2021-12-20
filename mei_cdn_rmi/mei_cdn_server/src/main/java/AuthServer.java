@@ -1,6 +1,5 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 
 public class AuthServer extends UnicastRemoteObject implements AuthInterface {
     private UserManagement userManagement;
