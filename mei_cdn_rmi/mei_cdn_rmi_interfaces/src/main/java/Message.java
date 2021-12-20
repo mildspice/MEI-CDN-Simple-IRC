@@ -42,7 +42,7 @@ public class Message implements Serializable{
     }
 
     public boolean hasFile(){
-        return file.isEmpty();
+        return !file.isEmpty();
     }
 
     public String getFileName(){
