@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public interface ChatClientInterface extends Remote {
     
-    void publicChatMessage(String username, String message) throws RemoteException;
+    void chatMessage(Message message) throws RemoteException;
 
     void updateOnlineUsers(Collection<String> userNames) throws RemoteException;
 

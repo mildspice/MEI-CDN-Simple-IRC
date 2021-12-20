@@ -9,7 +9,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
     }
 
     @Override
-    public void publicChatMessage(String username, String message) throws RemoteException {
+    public void chatMessage(Message message) throws RemoteException {
         // TODO Auto-generated method
     }
 

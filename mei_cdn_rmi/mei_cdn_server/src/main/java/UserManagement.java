@@ -28,10 +28,10 @@ public class UserManagement {
         return users.keySet();
     }
 
-    public synchronized void sendMessageToAll(String who, String message) {
+    public synchronized void sendMessageToAll(Message message) {
         for (User user : users.values()) {
             try {
-                user.getChatClientInterface().publicChatMessage(who, message); 
+                user.getChatClientInterface().chatMessage(message);
             } catch (RemoteException e) {
                 System.err.println("--- ERR\n> Error updating online users to client - " + user.getUsername() + "\n---");
             }

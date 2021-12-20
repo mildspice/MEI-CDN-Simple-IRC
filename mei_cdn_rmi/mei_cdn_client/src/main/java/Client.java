@@ -17,14 +17,15 @@ public class Client {
       try {		
         AuthInterface auth = (AuthInterface) Naming.lookup("rmi://" + host + "/AuthServer");
         System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/AuthServer");
-
+		ChatServerInterface chatServer  = (ChatServerInterface) Naming.lookup("rmi://" + host + "/ChatServer");
+        System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/ChatServer");
         //ChatClient chat = new ChatClient();
         //UnicastRemoteObject.exportObject(chat, 1099);
         FileServerInterface fileServer = (FileServerInterface) Naming.lookup("rmi://" + host + "/FileServer");
         System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/FileServer");
 
         FileClient fileClient = new FileClient();
-
+		
         //ClientGUI.openChatMainWindow();
         SwingUtilities.invokeLater(new Runnable() {
 
