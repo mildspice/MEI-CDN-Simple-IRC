@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -32,11 +31,11 @@ public class ClientGUI {
 
     // # GUI fields
     private static JFrame guiFrame; // main Frame
-	private static JPanel chatBoardPanel, chatInputPanel;
+	private static JPanel chatBoardPanel, chatInputPanel, generalInputPanel;
 	private static JTextField messageInput;
 	private static Font msgFont = new Font("monospaced", Font.PLAIN, 12);
     private static Font listFont = new Font("Arial", Font.PLAIN, 14);
-	private static Border blankBorder = BorderFactory.createEmptyBorder(10,10,20,10);
+	private static Border blankBorder = BorderFactory.createEmptyBorder(3,3,6,3);
     private static JList<String> onlineUsers;
     private static DefaultListModel<String> listModel;
     private static JTextPane chatBoard;
@@ -81,7 +80,7 @@ public class ClientGUI {
                     System.out.println("> Chat message from " + user + ": " + message);
 
                 } else if(click.getSource() == privateMsgBtn){
-                    List<String> selectedUsers = onlineUsers.getSelectedValuesList();
+                    //List<String> selectedUsers = onlineUsers.getSelectedValuesList();
                     // TODO implement send a private chat message
                     message = messageInput.getText();
                     messageInput.setText("");
@@ -116,16 +115,18 @@ public class ClientGUI {
 		});
         guiFrame.setLocationByPlatform(true);
         guiFrame.setAlwaysOnTop(true);
+        guiFrame.setResizable(false);
 		guiFrame.setLocation(150, 150);
-        guiFrame.setPreferredSize(new Dimension(700, 450));
+        //guiFrame.setPreferredSize(new Dimension(700, 450));
 
 		JPanel chatBoardOuterPanel = new JPanel(new BorderLayout());
-		chatBoardOuterPanel.add(setChatInputsPanel(), BorderLayout.PAGE_END);
-		chatBoardOuterPanel.add(setChatBoardPanel(), BorderLayout.PAGE_START);
+        chatBoardOuterPanel.add(setGeneralInputsPanel(), BorderLayout.NORTH);
+		chatBoardOuterPanel.add(setChatBoardPanel(), BorderLayout.CENTER);
+        chatBoardOuterPanel.add(setChatInputsPanel(), BorderLayout.SOUTH);
 		
 		guiFrame.setLayout(new BorderLayout());
 		guiFrame.add(chatBoardOuterPanel, BorderLayout.CENTER);
-		guiFrame.add(setOnlineUsersPanel(), BorderLayout.WEST);
+		guiFrame.add(setOnlineUsersPanel(), BorderLayout.EAST);
 
         guiFrame.pack();
 		messageInput.requestFocus();
@@ -150,7 +151,8 @@ public class ClientGUI {
     public static void onlineUsersPanel(List<String> currClients) {
         if (clientPanel != null) userPanel.remove(clientPanel);
 
-    	clientPanel = new JPanel(new BorderLayout());
+    	clientPanel = new JPanel(new BorderLayout(20, 10));
+        clientPanel.setFont(listFont);
         listModel = new DefaultListModel<String>();
         
         for (String s : currClients) {
@@ -160,7 +162,6 @@ public class ClientGUI {
         	privateMsgBtn.setEnabled(true);
         }
         
-        //Create the list and put it in a scroll pane.
         onlineUsers = new JList<String>(listModel);
         onlineUsers.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         onlineUsers.setVisibleRowCount(8);
@@ -173,22 +174,33 @@ public class ClientGUI {
         userPanel.revalidate();
     }
 
+    private static JPanel setOnlineUsersPanel() {
+		userPanel = new JPanel(new BorderLayout());
+		// JLabel userLabel = new JLabel("ONLINE", JLabel.CENTER);	
+		// userLabel.setFont(listFont);
+        // userPanel.add(userLabel, BorderLayout.SOUTH);
+
+		onlineUsersPanel(List.of("No one's here :'("));
+
+        userPanel.setPreferredSize(new Dimension(150, 100));
+		userPanel.setBorder(BorderFactory.createEmptyBorder(3,1,3,1));
+
+		return userPanel;		
+	}
+
     private static JPanel setChatBoardPanel() {
-        EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 10, 10));
-		chatBoard = new JTextPane();
-		chatBoard.setMargin(new Insets(10, 10, 10, 10));
-
-		chatBoard.setFont(msgFont);
-        chatBoard.setBorder(eb);
-        //tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-
+        chatBoard = new JTextPane();
         appendToChatBoardPanel("SERVER> Welcome!\nSERVER> Enter a unique username below and press SIGN UP to begin.\n...\n", Color.GREEN.darker().darker());
-		
+		chatBoard.setMargin(new Insets(10, 10, 10, 10));
+        //chatBoard.setBorder(blankBorder);
+        //chatBoard.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+		chatBoard.setFont(msgFont);
 		//chatBoard.setLineWrap(true);
 		//chatBoard.setWrapStyleWord(true);
 		chatBoard.setEditable(false);
+
 		JScrollPane scrollPane = new JScrollPane(chatBoard);
-        scrollPane.setPreferredSize(new Dimension(515, 350));
+        scrollPane.setPreferredSize(new Dimension(750, 350));
 		chatBoardPanel = new JPanel();
 		chatBoardPanel.add(scrollPane);
 	
@@ -197,31 +209,14 @@ public class ClientGUI {
 	}
 
     private static JPanel setChatInputsPanel() {
-		chatInputPanel = new JPanel(new GridLayout(1, 1, 1, 5));
+		chatInputPanel = new JPanel(new GridLayout(2, 1, 1, 2));
 		chatInputPanel.setBorder(blankBorder);	
+        
 		messageInput = new JTextField();
+        messageInput.setMargin(new Insets(5, 5, 5, 5));
 		messageInput.setFont(msgFont);
-		chatInputPanel.add(messageInput);
-		return chatInputPanel;
-	}
 
-    private static JPanel setOnlineUsersPanel() {
-		userPanel = new JPanel(new BorderLayout());
-		JLabel userLabel = new JLabel("ONLINE", JLabel.CENTER);
-		userPanel.add(userLabel, BorderLayout.NORTH);	
-		userLabel.setFont(listFont);
-
-		onlineUsersPanel(List.of("No one's here :'("));
-
-		clientPanel.setFont(msgFont);
-		userPanel.add(buttonsPanel(), BorderLayout.SOUTH);		
-		userPanel.setBorder(blankBorder);
-
-		return userPanel;		
-	}
-	
-	private static JPanel buttonsPanel() {		
-		msgBtn = new JButton("Message");
+        msgBtn = new JButton("Message");
 		msgBtn.addActionListener(temp);
 		msgBtn.setEnabled(false);
 
@@ -233,16 +228,28 @@ public class ClientGUI {
         sendFileBtn.addActionListener(temp);
         sendFileBtn.setEnabled(false);
 		
-		loginBtn = new JButton("Sign Up");
+		JPanel buttonPanel = new JPanel(new GridLayout(1, 5));
+        buttonPanel.add(msgBtn);
+        buttonPanel.add(sendFileBtn);
+        buttonPanel.add(new JLabel(""));
+        buttonPanel.add(privateMsgBtn);
+
+		chatInputPanel.add(messageInput);
+        chatInputPanel.add(buttonPanel);
+		return chatInputPanel;
+	}
+
+    private static JPanel setGeneralInputsPanel() {
+		generalInputPanel = new JPanel(new GridLayout(1, 1, 1, 2));
+		generalInputPanel.setBorder(blankBorder);	
+		
+        loginBtn = new JButton("Sign Up");
 		loginBtn.addActionListener(temp);
 		
-		JPanel buttonPanel = new JPanel(new GridLayout(5, 1));
-		buttonPanel.add(privateMsgBtn);
-		buttonPanel.add(new JLabel(""));
-		buttonPanel.add(loginBtn);
-		buttonPanel.add(msgBtn);
-        buttonPanel.add(sendFileBtn);
-		
-		return buttonPanel;
+		JPanel buttonPanel = new JPanel(new GridLayout(1, 1));
+        buttonPanel.add(loginBtn);
+
+        generalInputPanel.add(buttonPanel);
+		return generalInputPanel;
 	}
 }

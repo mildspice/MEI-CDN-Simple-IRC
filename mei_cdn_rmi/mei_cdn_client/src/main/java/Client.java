@@ -3,6 +3,9 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 public class Client {
 
@@ -26,6 +29,7 @@ public class Client {
         FileClient fileClient = new FileClient();
 
         //ClientGUI.openChatMainWindow();
+        UIManager.setLookAndFeel(new NimbusLookAndFeel());
         SwingUtilities.invokeLater(new Runnable() {
 
           @Override
@@ -38,6 +42,8 @@ public class Client {
       } catch (NotBoundException | MalformedURLException err) {
         System.out.println("> Server seems to be unavailable. NOT FOUND | rmi://" + host + "/AuthServer");
         err.printStackTrace();
+      } catch (UnsupportedLookAndFeelException exc) {
+        System.err.println("Nimbus: Unsupported Look and feel!");
       }
     }
 }
