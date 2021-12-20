@@ -14,6 +14,7 @@ public class Message implements Serializable{
         this.message = message;
         this.isPM = isPM;
         date = Instant.now();
+        file = "";
     }
 
     public Message(String sender, String message, boolean isPM, String filename) {
@@ -41,7 +42,7 @@ public class Message implements Serializable{
     }
 
     public boolean hasFile(){
-        return file != null;
+        return file.isEmpty();
     }
 
     public String getFileName(){
