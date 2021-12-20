@@ -49,6 +49,8 @@ public class ClientGUI {
     private static String user, message;
     private static AuthInterface serverAuthStub;
     private static FileServerInterface serverFileStub;
+    private static ChatServerInterface serverChatStub;
+
     private static ChatClient clientChatStub;
     private static FileClient clientFileManager;
 
@@ -62,6 +64,8 @@ public class ClientGUI {
                         guiFrame.setTitle("Hello " + user + "!");
                         messageInput.setText("");
                         appendToChatBoardPanel("SERVER> You are being connected to chat, hold a moment ...\n", Color.green);
+
+                        // TODO update chat history
 
                         String cleanUsername = user.replaceAll("\\s+","_").replaceAll("\\W+","_");
                         clientChatStub = new ChatClient();
@@ -83,9 +87,10 @@ public class ClientGUI {
                 } else if (click.getSource() == msgBtn) {
                     message = messageInput.getText();
                     messageInput.setText("");
+                    serverChatStub.updateChat(new Message(user, message, false));
+
                     // TODO implement send a public chat message using ChatServer STUB
-                    // sendMessage(message); to server
-                    System.out.println("> Chat message from " + user + ": " + message);
+                    // System.out.println("> Chat message from " + user + ": " + message);
 
                 } else if (click.getSource() == sendFileBtn) {
                     JFileChooser fileChooser = new JFileChooser();
@@ -121,11 +126,12 @@ public class ClientGUI {
 	    }
     };
 
-    public static void openChatMainWindow(AuthInterface authStub, FileServerInterface filesStub) {
+    public static void openChatMainWindow(AuthInterface authStub, FileServerInterface filesStub, ChatServerInterface chatStub) {
         if (guiFrame != null && guiFrame.isVisible()) return;
 
         serverAuthStub = authStub;
         serverFileStub = filesStub;
+        serverChatStub = chatStub;
         guiFrame = new JFrame("Simple IRC");
 
         guiFrame.addWindowListener(new java.awt.event.WindowAdapter() {

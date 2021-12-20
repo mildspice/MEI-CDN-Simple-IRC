@@ -1,10 +1,9 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 public class FileManagement {
-    private final List<String> fileList = new ArrayList();
+    private final List<String> fileList = new ArrayList<>();
 
     public void addFile(String file) {
         fileList.add(file);

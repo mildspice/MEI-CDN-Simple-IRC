@@ -4,10 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class FileClient extends UnicastRemoteObject implements FileClientInterface {
+public class FileClient {
 
     protected FileClient() throws RemoteException {
         super();

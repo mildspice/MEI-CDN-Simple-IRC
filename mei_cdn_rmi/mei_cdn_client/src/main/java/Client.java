@@ -17,13 +17,14 @@ public class Client {
         System.out.println("> No host was specified. Using 'localhost' as default ...");
       }
 
-      try {		
-        AuthInterface auth = (AuthInterface) Naming.lookup("rmi://" + host + "/AuthServer");
-        System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/AuthServer");
-		    ChatServerInterface chatServer  = (ChatServerInterface) Naming.lookup("rmi://" + host + "/ChatServer");
-        System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/ChatServer");
+      try {
         //ChatClient chat = new ChatClient();
         //UnicastRemoteObject.exportObject(chat, 1099);
+        
+        AuthInterface auth = (AuthInterface) Naming.lookup("rmi://" + host + "/AuthServer");
+        System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/AuthServer");
+		    ChatServerInterface chat  = (ChatServerInterface) Naming.lookup("rmi://" + host + "/ChatServer");
+        System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/ChatServer");
         FileServerInterface files = (FileServerInterface) Naming.lookup("rmi://" + host + "/FileServer");
         System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/FileServer");
 
@@ -34,7 +35,7 @@ public class Client {
           @Override
           public void run() {
             System.out.println("> Opening GUI ...");
-            ClientGUI.openChatMainWindow(auth, files);
+            ClientGUI.openChatMainWindow(auth, files, chat);
           }
         });
 

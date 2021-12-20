@@ -1,6 +1,5 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.MessageDigest;
 import java.util.List;
 
 public class ChatServer extends UnicastRemoteObject implements ChatServerInterface {

@@ -2,16 +2,11 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Date;
 
-public class Server extends UnicastRemoteObject implements DummyInterface {
+public class Server extends UnicastRemoteObject {
 
   public Server() throws RemoteException {
     super();
-  }
-
-  public Date getDate() {
-    return new Date();
   }
 
   private static void startRmiRegistry(int port) {
