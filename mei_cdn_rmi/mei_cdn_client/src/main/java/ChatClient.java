@@ -18,9 +18,10 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
         } else {
             ClientGUI.appendToChatBoardPanel("GENERAL> " + message.getSender() + ": ", Color.blue.darker());
         }
-        ClientGUI.appendToChatBoardPanel(message.getMessage() + " ", Color.black);
+        ClientGUI.appendToChatBoardPanel(message.getMessage(), Color.black);
         if (message.hasFile()) {
-            ClientGUI.appendLinkToChatBoardPanel(message.getClientFile().getAbsolutePath(), Color.black);
+            ClientGUI.appendToChatBoardPanel("\nATTACHMENT> ", Color.black);
+            ClientGUI.appendFileToChatBoardPanel(ClientGUI.generateFileDownloadPath(message), Color.black);
         }
         ClientGUI.appendToChatBoardPanel("\n", Color.black);
     }

@@ -18,7 +18,7 @@ public class FileServer extends UnicastRemoteObject implements FileServerInterfa
 
     public boolean uploadFileToServer(byte[] data, String serverPath, int length) throws RemoteException {
         try {
-            System.out.println("Saving File: "+serverPath);
+            System.out.println("> Saving File: " + serverPath);
             File serverPathFile = new File(serverPath);
             FileOutputStream out = new FileOutputStream(serverPathFile);
             byte[] bdata = data;

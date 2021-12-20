@@ -82,7 +82,7 @@ public class ClientGUI {
                         clientChatStub = new ChatClient();
                         clientFileManager = new FileClient();
                         if (!serverAuthStub.login(cleanUsername, clientChatStub)) {
-                            JOptionPane.showMessageDialog(guiFrame, "User may be already logged in!",
+                            JOptionPane.showMessageDialog(guiFrame, "User already logged in!",
                                     "Login failed", JOptionPane.WARNING_MESSAGE);
                         } else {
                             loginBtn.setEnabled(false);
@@ -111,12 +111,12 @@ public class ClientGUI {
                         File selectedFile = fileChooser.getSelectedFile();
                         String extension = selectedFile.getName().substring(selectedFile.getName().lastIndexOf(".")),
                                 name = selectedFile.getName().substring(0, selectedFile.getName().lastIndexOf(".")),
-                                serverName = name + "_" + Instant.now().toEpochMilli() + extension;
+                                fileName = name + "_" + Instant.now().toEpochMilli() + extension;
 
-                        if (clientFileManager.uploadFileToServer(serverFileStub, serverName, selectedFile)) {
+                        if (clientFileManager.uploadFileToServer(serverFileStub, fileName, selectedFile)) {
                             message = messageInput.getText();
                             messageInput.setText("");
-                            serverChatStub.updateChat(new Message(user, message, false, serverName, selectedFile));
+                            serverChatStub.updateChat(new Message(user, message, false, fileName));
                         }
                     }
 
@@ -126,8 +126,11 @@ public class ClientGUI {
 
                     message = messageInput.getText();
                     messageInput.setText("");
-                    serverChatStub.updateChat(new Message(user, message, true));
+                    serverChatStub.sendPM(selectedUsers, new Message(user, message, true));
                 } else if (click.getSource() == privateMsgFileBtn) {
+                    List<String> selectedUsers = onlineUsers.getSelectedValuesList();
+                    selectedUsers.add(user);
+
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -136,12 +139,12 @@ public class ClientGUI {
                         File selectedFile = fileChooser.getSelectedFile();
                         String extension = selectedFile.getName().substring(selectedFile.getName().lastIndexOf(".")),
                                 name = selectedFile.getName().substring(0, selectedFile.getName().lastIndexOf(".")),
-                                serverName = name + "_" + Instant.now().toEpochMilli() + extension;
+                                fileName = name + "_" + Instant.now().toEpochMilli() + extension;
 
-                        if (clientFileManager.uploadFileToServer(serverFileStub, serverName, selectedFile)) {
+                        if (clientFileManager.uploadFileToServer(serverFileStub, fileName, selectedFile)) {
                             message = messageInput.getText();
                             messageInput.setText("");
-                            serverChatStub.updateChat(new Message(user, message, true, serverName, selectedFile));
+                            serverChatStub.sendPM(selectedUsers, new Message(user, message, true, fileName));
                         }
                     }
 
@@ -151,6 +154,19 @@ public class ClientGUI {
             }
         }
     };
+
+    public static String generateFileDownloadPath(Message message) {
+        return System.getProperty("user.home") + File.separator + "Downloads" + File.separator + message.getServerFileName();
+    }
+
+    public static File downloadFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            return clientFileManager.downloadFileFromServer(serverFileStub, file.getName(), file.getAbsolutePath());
+        } catch (RemoteException e) { e.printStackTrace(); }
+        JOptionPane.showMessageDialog(guiFrame, "Failed to download file from server ...", "Download failed", JOptionPane.WARNING_MESSAGE);
+        return null;
+    }
 
     public static void openChatMainWindow(AuthInterface authStub, FileServerInterface filesStub,
             ChatServerInterface chatStub) {
@@ -213,20 +229,20 @@ public class ClientGUI {
         chatBoard.setEditable(false);
     }
 
-    public static void appendLinkToChatBoardPanel(String url, Color color) {
+    public static void appendFileToChatBoardPanel(String filePath, Color color) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, color);
 
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "monospaced");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
         aset = sc.addAttribute(aset, StyleConstants.Underline, true);
-        aset = sc.addAttribute(aset, HTML.Attribute.HREF, url.toString());
+        aset = sc.addAttribute(aset, HTML.Attribute.HREF, filePath.toString());
 
         int len = chatBoard.getDocument().getLength();
         chatBoard.setEditable(true);
         chatBoard.setCaretPosition(len);
         chatBoard.setCharacterAttributes(aset, false);
-        chatBoard.replaceSelection(url);
+        chatBoard.replaceSelection(filePath);
         chatBoard.setEditable(false);
     }
 
@@ -360,12 +376,15 @@ public class ClientGUI {
                     DefaultStyledDocument hdoc = (DefaultStyledDocument) doc;
                     Element el = hdoc.getCharacterElement(pos);
                     AttributeSet a = el.getAttributes();
-                    String file = (String) a.getAttribute(HTML.Attribute.HREF);
+                    String filePath = (String) a.getAttribute(HTML.Attribute.HREF);
 
-                    if (file != null) {
+                    if (filePath != null) {
                         try {
                             // # GET FILE IN EXPLORER
-                            Runtime.getRuntime().exec("explorer.exe /select," + file);
+                            File file = downloadFile(filePath);
+                            if (file != null) {
+                                Runtime.getRuntime().exec("explorer.exe /select," + file.getAbsolutePath());
+                            }
 
                             // # OPEN FILE
                             // java.awt.Desktop desktop = java.awt.Desktop.getDesktop();

@@ -12,14 +12,14 @@ public class FileClient {
         super();
     }
 
-    public boolean downloadFileFromServer(FileServerInterface fServer, String serverPath, String clientPath)
+    public File downloadFileFromServer(FileServerInterface fServer, String serverFileName, String clientFileName)
             throws RemoteException {
-        byte[] data = fServer.downloadFileFromServer(serverPath);
+        byte[] data = fServer.downloadFileFromServer(serverFileName);
         if(data == null){
             System.out.println("File does not exist ばか");
-            return false;
+            return null;
         }
-        File clientpathfile = new File(clientPath);
+        File clientpathfile = new File(clientFileName);
         FileOutputStream out;
         try {
             out = new FileOutputStream(clientpathfile);
@@ -28,12 +28,12 @@ public class FileClient {
             out.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return false;
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
-        return true;
+        return clientpathfile;
     }
 
     public boolean uploadFileToServer(FileServerInterface fServer, String serverPath, File clientpathfile)
