@@ -13,10 +13,10 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
     @Override
     public void chatMessage(Message message) throws RemoteException {
         if (message.isPM()) {
-            ClientGUI.appendToChatBoardPanel("PM> " + message.getSender() + ": ", Color.yellow);
+            ClientGUI.appendToChatBoardPanel("PM> " + message.getSender() + ": ", Color.yellow.darker().darker());
             
         } else {
-            ClientGUI.appendToChatBoardPanel("GENERAL> " + message.getSender() + ": ", Color.blue);
+            ClientGUI.appendToChatBoardPanel("GENERAL> " + message.getSender() + ": ", Color.blue.darker());
         }
         ClientGUI.appendToChatBoardPanel(message.getMessage() + " ", Color.black);
         if (message.hasFile()) {

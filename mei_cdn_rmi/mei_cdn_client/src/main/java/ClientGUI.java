@@ -89,6 +89,7 @@ public class ClientGUI {
                             msgBtn.setEnabled(true);
                             msgFileBtn.setEnabled(true);
                             privateMsgBtn.setEnabled(true);
+                            privateMsgFileBtn.setEnabled(true);
                             appendToChatBoardPanel("SERVER> Logged in successfuly! You may start chatting.\n",
                                     Color.green.darker().darker());
                         }
@@ -307,13 +308,17 @@ public class ClientGUI {
         msgBtn.addActionListener(temp);
         msgBtn.setEnabled(false);
 
+        msgFileBtn = new JButton("Send File");
+        msgFileBtn.addActionListener(temp);
+        msgFileBtn.setEnabled(false);
+
         privateMsgBtn = new JButton("Private Message");
         privateMsgBtn.addActionListener(temp);
         privateMsgBtn.setEnabled(false);
 
-        msgFileBtn = new JButton("Send File");
-        msgFileBtn.addActionListener(temp);
-        msgFileBtn.setEnabled(false);
+        privateMsgFileBtn = new JButton("Send Private File");
+        privateMsgFileBtn.addActionListener(temp);
+        privateMsgFileBtn.setEnabled(false);
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 6));
         buttonPanel.add(msgBtn);
