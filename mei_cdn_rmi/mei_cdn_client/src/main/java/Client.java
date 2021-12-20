@@ -24,7 +24,7 @@ public class Client {
         FileServerInterface fileServer = (FileServerInterface) Naming.lookup("rmi://" + host + "/FileServer");
         System.out.println("> Successfully connected to RMI registry: rmi://" + host + "/FileServer");
         FileClient fileClient = new FileClient();
-		
+
         //ClientGUI.openChatMainWindow();
         SwingUtilities.invokeLater(new Runnable() {
 
