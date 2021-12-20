@@ -15,10 +15,9 @@ public class FileServer extends UnicastRemoteObject implements FileServerInterfa
 
     private FileManagement fileManager;
 
-    protected FileServer() throws RemoteException {
+    protected FileServer(FileManagement fileManagement) throws RemoteException {
         super();
-        fileManager = new FileManagement();
-        // TODO Auto-generated constructor stub
+        this.fileManager = fileManagement;
     }
 
     public boolean uploadFileToServer(byte[] data, String serverPath, int length) throws RemoteException {
